@@ -22,7 +22,8 @@
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
-		<activity android:name=".CameraActivity">
+		<activity android:name=".CameraActivity"
+		          android:label="Camera">
 			<meta-data android:name="entry" android:value="true"/>
 		</activity>
 	</application>

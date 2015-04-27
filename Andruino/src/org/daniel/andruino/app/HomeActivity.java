@@ -16,7 +16,6 @@ import android.widget.TextView;
 import org.daniel.andruino.app.utils.TU;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class HomeActivity extends Activity {
@@ -42,21 +41,17 @@ public class HomeActivity extends Activity {
         PackageInfo packageInfo = null;
         try {
 
-            packageInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES);
+            packageInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES | PackageManager.GET_META_DATA);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
         if (packageInfo != null) {
-            mActivityList.addAll(Arrays.asList(packageInfo.activities));
-        }
-        int myPos;
-        for (myPos = 0; myPos < mActivityList.size(); myPos++) {
-            ActivityInfo info = mActivityList.get(myPos);
-            if (info.name.equals(getComponentName().getClassName())) {
-                break;
+            for (ActivityInfo info : packageInfo.activities) {
+                if (info.metaData != null && info.metaData.getBoolean("entry", false)) {
+                    mActivityList.add(info);
+                }
             }
         }
-        mActivityList.remove(myPos);
     }
 
     private class HomeAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
